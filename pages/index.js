@@ -6,7 +6,6 @@ import CartItem from "../components/CartItem";
 import OrderSummary from "../components/OrderSummary";
 import StepIndicator from "../components/StepIndicator";
 import { useCheckout } from "../context/CheckoutContext";
-import cartData from "../lib/cartData";
 
 export default function CartPage() {
   const router = useRouter();
@@ -96,9 +95,29 @@ export default function CartPage() {
 }
 
 // getServerSideProps runs server-side on every request.
-// Cart data is imported directly from lib/cartData — no HTTP self-call needed.
 export async function getServerSideProps() {
   return {
-    props: { cartData },
+    props: {
+      cartData: {
+        cartItems: [
+          {
+            product_id: 101,
+            product_name: "Bamboo Toothbrush (Pack of 4)",
+            product_price: 299,
+            quantity: 2,
+            image: "https://via.placeholder.com/150",
+          },
+          {
+            product_id: 102,
+            product_name: "Reusable Cotton Produce Bags",
+            product_price: 450,
+            quantity: 1,
+            image: "https://via.placeholder.com/150",
+          },
+        ],
+        shipping_fee: 50,
+        discount_applied: 0,
+      },
+    },
   };
 }
