@@ -1,3 +1,5 @@
+import { useCheckout } from "../context/CheckoutContext";
+
 export default function CartItem({ item }) {
   const { updateQuantity, removeItem } = useCheckout();
 
