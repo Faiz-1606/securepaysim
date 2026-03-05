@@ -97,46 +97,13 @@ export default function CartPage() {
 // Server-Side Rendering – runs on every request.
 // We call our own API route to fetch the cart data so this
 // is a real async SSR data-fetch, not just a static import.
-export async function getServerSideProps(context) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    `http://localhost:${process.env.PORT || 3000}`;
+// getServerSideProps imports the mock data directly — no HTTP self-call.
+// Self-fetching (fetch('http://localhost/api/...')) doesn't work in Vercel's
+// serverless runtime because there's no localhost to connect to at build time.
+export async function getServerSideProps() {
+  const cartData = require("../lib/cartData");
 
-  try {
-    const res = await fetch(`${baseUrl}/api/cart`);
-
-    if (!res.ok) throw new Error("Failed to fetch cart data");
-
-    const cartData = await res.json();
-
-    return {
-      props: { cartData },
-    };
-  } catch (err) {
-    // Fallback to hardcoded data if something goes wrong
-    return {
-      props: {
-        cartData: {
-          cartItems: [
-            {
-              product_id: 101,
-              product_name: "Bamboo Toothbrush (Pack of 4)",
-              product_price: 299,
-              quantity: 2,
-              image: "https://via.placeholder.com/150",
-            },
-            {
-              product_id: 102,
-              product_name: "Reusable Cotton Produce Bags",
-              product_price: 450,
-              quantity: 1,
-              image: "https://via.placeholder.com/150",
-            },
-          ],
-          shipping_fee: 50,
-          discount_applied: 0,
-        },
-      },
-    };
-  }
+  return {
+    props: { cartData },
+  };
 }
