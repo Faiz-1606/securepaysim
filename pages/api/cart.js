@@ -3,7 +3,7 @@
 // Data lives in lib/cartData.js so getServerSideProps can import it directly
 // without making a self-referential HTTP call (which breaks on Vercel).
 
-const cartData = require("../../lib/cartData");
+import cartData from "../../lib/cartData";
 
 export default function handler(req, res) {
   if (req.method !== "GET") {

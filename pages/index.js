@@ -6,6 +6,7 @@ import CartItem from "../components/CartItem";
 import OrderSummary from "../components/OrderSummary";
 import StepIndicator from "../components/StepIndicator";
 import { useCheckout } from "../context/CheckoutContext";
+import cartData from "../lib/cartData";
 
 export default function CartPage() {
   const router = useRouter();
@@ -94,15 +95,9 @@ export default function CartPage() {
   );
 }
 
-// Server-Side Rendering – runs on every request.
-// We call our own API route to fetch the cart data so this
-// is a real async SSR data-fetch, not just a static import.
-// getServerSideProps imports the mock data directly — no HTTP self-call.
-// Self-fetching (fetch('http://localhost/api/...')) doesn't work in Vercel's
-// serverless runtime because there's no localhost to connect to at build time.
+// getServerSideProps runs server-side on every request.
+// Cart data is imported directly from lib/cartData — no HTTP self-call needed.
 export async function getServerSideProps() {
-  const cartData = require("../lib/cartData");
-
   return {
     props: { cartData },
   };
